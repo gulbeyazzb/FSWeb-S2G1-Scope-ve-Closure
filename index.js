@@ -160,18 +160,24 @@ function skorTabelasi(p_periyotSkoru, p_takimSkoru, ceyrekSayisi) {
   let KonukTakim = 0;
   for (let i = 0; i < ceyrekSayisi; i++) {
     const periyot = p_periyotSkoru(p_takimSkoru);
-    const metin =
-      i +
-      ". Periyot: Ev Sahibi " +
-      periyot.EvSahibi +
-      " - Konuk Takım " +
-      periyot.KonukTakim;
+    const metin = `${i}. Periyot: Ev Sahibi ${periyot.EvSahibi} - Konuk Takım ${periyot.KonukTakim}`;
     sonuc.push(metin);
     EvSahibi += periyot.EvSahibi;
     KonukTakim += periyot.KonukTakim;
   }
-  let skor =
-    "Maç Sonucu: Ev Sahibi " + EvSahibi + " - Konuk Takım " + KonukTakim;
+  let i = 0;
+  while (EvSahibi === KonukTakim) {
+    const periyot = p_periyotSkoru(p_takimSkoru);
+    EvSahibi = periyot.EvSahibi;
+    KonukTakim = periyot.KonukTakim;
+    sonuc.push(
+      `${i}. Uzatma: Ev Sahibi ${EvSahibi} - Konuk Takım ${KonukTakim}`
+    );
+    i++;
+    EvSahibi += periyot.EvSahibi;
+    KonukTakim += periyot.KonukTakim;
+  }
+  let skor = `Maç Sonucu: Ev Sahibi ${EvSahibi} - Konuk Takım ${KonukTakim}`;
   sonuc.push(skor);
   return sonuc;
 }
