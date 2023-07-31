@@ -70,13 +70,9 @@ Not: Bu fonskiyon, aşağıdaki diğer görevler için de bir callback fonksiyon
 */
 
 function takimSkoru() {
-  return (ceyrekSayi = () => {
-    return Math.floor(Math.random() * 15 + 10);
-  });
+  return Math.floor(Math.random() * 16 + 10);
 }
-const sayi = takimSkoru(1);
-const scor1 = sayi();
-console.log(scor1);
+//console.log(takimSkoru());
 
 /* Görev 3: macSonucu() 
 Aşağıdaki macSonucu() fonksiyonununda aşağıdakileri yapınız:
@@ -93,20 +89,19 @@ Aşağıdaki macSonucu() fonksiyonununda aşağıdakileri yapınız:
 }
 */
 
-function macSonucu(callback, sayi) {
-  let EvSahibi = 10;
-  let KonukTakim = 25;
-  const a = callback;
-  const skor = a();
-  EvSahibi += sayi * skor;
-  KonukTakim += sayi * skor;
-
+function macSonucu(callback, ceyrekSayisi) {
+  let EvSahibi = 0;
+  let KonukTakim = 0;
+  for (let i = 1; i <= ceyrekSayisi; i++) {
+    EvSahibi += callback();
+    KonukTakim += callback();
+  }
   return {
     EvSahibi: EvSahibi,
     KonukTakim: KonukTakim,
   };
 }
-console.log(macSonucu(takimSkoru(), 4));
+// console.log(macSonucu(takimSkoru, 4));
 /* Zorlayıcı Görev 4: periyotSkoru()
 Aşağıdaki periyotSkoru() fonksiyonununda aşağıdakileri yapınız:
   1. Görev 2'de oluşturduğunuz 'takimSkoru'nu callback fonskiyonunu olarak ilk parametrede alın
@@ -121,15 +116,12 @@ Aşağıdaki periyotSkoru() fonksiyonununda aşağıdakileri yapınız:
   */
 
 function periyotSkoru(callback) {
-  const a = callback;
-  const EvSahibi = a();
-  const KonukTakim = a();
   return {
-    EvSahibi: EvSahibi,
-    KonukTakim: KonukTakim,
+    EvSahibi: callback(),
+    KonukTakim: callback(),
   };
 }
-console.log(periyotSkoru(takimSkoru()));
+//console.log(periyotSkoru(takimSkoru));
 
 /* Zorlayıcı Görev 5: skorTabelasi() 
 Aşağıdaki skorTabelasi() fonksiyonunu kullanarak aşağıdakileri yapınız:
@@ -163,11 +155,27 @@ MAÇ UZAR ise skorTabelasi(periyotSkoru,takimSkoru,4)
 // NOTE: Bununla ilgili bir test yoktur. Eğer logladığınız sonuçlar yukarıdakine benziyor ise tmamlandı sayabilirsiniz.
 
 function skorTabelasi(p_periyotSkoru, p_takimSkoru, ceyrekSayisi) {
-  const takımSkor = p_takimSkoru;
-  const periyot = p_periyotSkoru;
-  return periyot;
+  let sonuc = [];
+  let EvSahibi = 0;
+  let KonukTakim = 0;
+  for (let i = 0; i < ceyrekSayisi; i++) {
+    const periyot = p_periyotSkoru(p_takimSkoru);
+    const metin =
+      i +
+      ". Periyot: Ev Sahibi " +
+      periyot.EvSahibi +
+      " - Konuk Takım " +
+      periyot.KonukTakim;
+    sonuc.push(metin);
+    EvSahibi += periyot.EvSahibi;
+    KonukTakim += periyot.KonukTakim;
+  }
+  let skor =
+    "Maç Sonucu: Ev Sahibi " + EvSahibi + " - Konuk Takım " + KonukTakim;
+  sonuc.push(skor);
+  return sonuc;
 }
-console.log(skorTabelasi(periyotSkoru, takimSkoru, 2));
+console.log(skorTabelasi(periyotSkoru, takimSkoru, 4));
 /* Aşağıdaki satırları lütfen değiştirmeyiniz*/
 function sa() {
   console.log("Kodlar çalışıyor");
